@@ -1,6 +1,6 @@
-function I_new = CondenseOrdering(score,imMasksOverlap)
+function I_new = CondenseOrdering(score,imMasksOverlapFlag)
 
-N = length(imMasksOverlap);
+N = length(imMasksOverlapFlag,1);
 
 %Start with descending ordering (best image has lowest index)
 [B_new I_new] =sort(score,'descend');
@@ -11,7 +11,7 @@ for iter = 1:200
     changeFlag = 0;
     for i = 1:N
         for j = i+1:N
-            if(~isempty(imMasksOverlap{I_new(i),I_new(j)}))
+            if(imMasksOverlapFlag(I_new(i),I_new(j)))
                 if((j-i)>4)
                     I_new = movedown(I_new,i,j);
                     changeFlag = 1;
@@ -26,13 +26,13 @@ for iter = 1:200
     end
 end
 
-% figure(7)
-% clf
-% hold on
-% for i = 1:N
-%     plot(imMasksOverlap{I_new(i),I_new(i)},i*ones(1,length(imMasksOverlap{I_new(i),I_new(i)})))
-% end
-% set(gca, 'YDir','reverse')
+figure(7)
+clf
+hold on
+for i = 1:N
+    plot(imMasksOverlap{I_new(i),I_new(i)},i*ones(1,length(imMasksOverlap{I_new(i),I_new(i)})))
+end
+set(gca, 'YDir','reverse')
 end
 
 function neworder = movedown(order, iCurr,iTar)

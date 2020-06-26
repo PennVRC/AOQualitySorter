@@ -27,24 +27,34 @@ imMasksOverlap = cell(1,N);%This stores the mask of each image as a vector
 for i = 1:N
     disp(['Calculating quality measures: ' num2str(i) ' of ' num2str(N)])
     im = imread(fullfile(inDir,AllSplit(i).name));
-    mask = im(:,:,1)<255;
-    imMasksOverlap{i,i} = find(mask(:));
+    if(size(im,3) > 0)
+        mask = im(:,:,2)>0;
+        im = im(:,:,1);
+    elseif(mode(im(:)) == 0)   
+        mask = im>0;
+    else
+        mask = im<255;
+    end
+    imMasksOverlap{i} = find(mask(:));
     score(i) = EdgeQualityMeasure(im);
     %score(i) = EdgeQualityThreshMeasure(im);
 end
 
 %calculate pair wise overlap
+imMasksOverlapFlag = eye(N,N);
 for i = 1:N
     disp(['Calculating pairwise overlaps: ' num2str(i) ' of ' num2str(N)])
     for j = (i+1):N
-       imMasksOverlap{i,j} = intersect(imMasksOverlap{i,i},imMasksOverlap{j,j});
-       imMasksOverlap{j,i} = imMasksOverlap{i,j};
+       if(~isempty(intersect(imMasksOverlap{i},imMasksOverlap{j})))
+           imMasksOverlapFlag(i,j) = 1;
+           imMasksOverlapFlag(j,i) = 1;
+       end
     end
 end    
 
 
 %sort by score and dondense
-I_new = CondenseOrdering(score,imMasksOverlap);
+I_new = CondenseOrdering(score,imMasksOverlapFlag);
 
 %save out new ordering
 for i = 1:N
