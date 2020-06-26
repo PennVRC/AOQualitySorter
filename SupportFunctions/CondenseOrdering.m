@@ -1,6 +1,6 @@
 function I_new = CondenseOrdering(score,imMasksOverlapFlag)
 
-N = length(imMasksOverlapFlag,1);
+N = size(imMasksOverlapFlag,1);
 
 %Start with descending ordering (best image has lowest index)
 [B_new I_new] =sort(score,'descend');
