@@ -61,18 +61,18 @@ for i = 1:N
     disp(['Saving new ordering: ' num2str(i) ' of ' num2str(N)])
     fnameIn = AllSplit(I_new(i)).name;
     fnameOut = [num2str(i,'%04.f') '_' AllSplit(I_new(i)).name];
-   copyfile(fullfile(inDir,fnameIn),fullfile(outDir,fnameOut));
+   copyfile(fullfile(inDir,fnameIn),fullfile(outDir,['Split' fnameOut]));
    
    fnameIn2 = strrep(fnameIn, '_split_det_', '_avg_');
    fnameIn2 = strrep(fnameIn2, '_m2.', '_m3.');
    fnameOut2 = strrep(fnameOut, '_split_det_', '_avg_');
    fnameOut2 = strrep(fnameOut2, '_m2.', '_m3.');
-   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,fnameOut2));
+   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Avg' fnameOut2]));
 
    fnameIn2 = strrep(fnameIn, '_split_det_', '_confocal_');
    fnameIn2 = strrep(fnameIn2, '_m2.', '_m1.');
    fnameOut2 = strrep(fnameOut, '_split_det_', '_confocal_');
    fnameOut2 = strrep(fnameOut2, '_m2.', '_m3.');
-   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,fnameOut2));
+   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Confocal' fnameOut2]));
 end
 end
