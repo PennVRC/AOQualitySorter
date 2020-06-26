@@ -26,13 +26,13 @@ for iter = 1:200
     end
 end
 
-figure(7)
-clf
-hold on
-for i = 1:N
-    plot(imMasksOverlap{I_new(i),I_new(i)},i*ones(1,length(imMasksOverlap{I_new(i),I_new(i)})))
-end
-set(gca, 'YDir','reverse')
+% figure(7)
+% clf
+% hold on
+% for i = 1:N
+%     plot(imMasksOverlap{I_new(i),I_new(i)},i*ones(1,length(imMasksOverlap{I_new(i),I_new(i)})))
+% end
+% set(gca, 'YDir','reverse')
 end
 
 function neworder = movedown(order, iCurr,iTar)
