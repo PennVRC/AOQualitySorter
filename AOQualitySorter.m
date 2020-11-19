@@ -60,19 +60,30 @@ I_new = CondenseOrdering(score,imMasksOverlapFlag);
 for i = 1:N
     disp(['Saving new ordering: ' num2str(i) ' of ' num2str(N)])
     fnameIn = AllSplit(I_new(i)).name;
-    fnameOut = [num2str(i,'%04.f') '_' AllSplit(I_new(i)).name];
-   copyfile(fullfile(inDir,fnameIn),fullfile(outDir,['Split' fnameOut]));
+    refSplit = strsplit(fnameIn,'aligned_to_ref');
+    if(length(refSplit) > 1)
+        refNum = refSplit{2}(1);
+    else
+        refNum = '1';
+    end
+     
+   fnameOut = [num2str(i,'%04.f') '_' AllSplit(I_new(i)).name];
+   
+   fnameOut=regexprep(fnameOut,'_aligned_to_ref\d*_m\d*','');
+   fnameOut = strrep(fnameOut, '_cropped_', '_crp');
+   fnameOut = strrep(fnameOut, '_repaired', '_rep');
+   
+   copyfile(fullfile(inDir,fnameIn),fullfile(outDir,['Sr' refNum 's' fnameOut]));
    
    fnameIn2 = strrep(fnameIn, '_split_det_', '_avg_');
    fnameIn2 = strrep(fnameIn2, '_m2.', '_m3.');
    fnameOut2 = strrep(fnameOut, '_split_det_', '_avg_');
-   fnameOut2 = strrep(fnameOut2, '_m2.', '_m3.');
-   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Avg' fnameOut2]));
+   
+   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Ar' refNum 's' fnameOut2]));
 
    fnameIn2 = strrep(fnameIn, '_split_det_', '_confocal_');
    fnameIn2 = strrep(fnameIn2, '_m2.', '_m1.');
    fnameOut2 = strrep(fnameOut, '_split_det_', '_confocal_');
-   fnameOut2 = strrep(fnameOut2, '_m2.', '_m3.');
-   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Confocal' fnameOut2]));
+   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Cr' refNum 's' fnameOut2]));
 end
 end
