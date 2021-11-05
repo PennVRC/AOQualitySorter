@@ -7,7 +7,7 @@ N = size(imMasksOverlapFlag,1);
 
 %now we collapse the ordering to cluster local images with each other
 %this preserves the relative ordering of overlapping images
-for iter = 1:200
+for iter = 1:2000
     changeFlag = 0;
     for i = 1:N
         for j = i+1:N

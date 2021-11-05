@@ -1,5 +1,5 @@
 inDirBase = 'D:\Min\Dropbox (Aguirre-Brainard Lab)\Quality_sorter\validation_data_set';
-outDirBase = 'D:\Research\ResearchResults\AO\QualitySorter\PaperValidation_v2';
+outDirBase = 'D:\Research\ResearchResults\AO\QualitySorter\PaperValidation_v3';
 
 allDatasets = dir(fullfile(inDirBase,'*_*'));
 
@@ -25,12 +25,15 @@ for i = 1:length(allDatasets)
         AllImagesCount(mask) = AllImagesCount(mask) + 1;
     end
 %     
-%     figure(1)
-%     imshow(AllImagesCount);
+     H=figure(1)
+     imshow(AllImagesCount);
      countMax = max(AllImagesCount(:));
-%     caxis([0 countMax]);
-%     colorbar
-%     
+     caxis([0 countMax]);
+     colorbar
+%    
+
+      saveas(H,fullfile(outDir,'AllCountMap.png'))
+            
 %     for N = 5:7
 %         figure(N)
 %         ThreshMapN = AllImagesCount;
@@ -97,12 +100,16 @@ for i = 1:length(allDatasets)
         if(sum(dataGroups(c,:)) >= 4)
             currGroupIm=zeros(size(ThreshMap4));
             currGroupImCount=zeros(size(ThreshMap4));
+            outSubDir = fullfile(outDir,num2str(c));
+            mkdir(outSubDir);    
             
             for j = 1:JN
                 if(dataGroups(c,j))
                     im = imread(fullfile(currDir,currSplit(j).name));
                     mask = im(:,:,2)>0;
                     vals = im(:,:,1);
+                    outcroppedname = fullfile(outSubDir,[currSplit(j).name(1:end-3) 'tif']);
+                     imwrite(croppedIm,outcroppedname,'tiff')
                     currGroupIm(mask) = vals(mask);
                     currGroupImCount(mask) = currGroupImCount(mask) + 1;
                 end
@@ -111,6 +118,9 @@ for i = 1:length(allDatasets)
             imMax = max(currGroupIm(:));
             imMaxCount = max(currGroupImCount(:));
             if(imMaxCount>=4)
+                
+                
+    
             H=figure(20)
             imshow(currGroupIm);
             caxis([0 imMax]);
@@ -122,6 +132,8 @@ for i = 1:length(allDatasets)
             caxis([0 imMaxCount]);
             colorbar
             saveas(H,fullfile(outDir,[num2str(c) '_count.png']))
+            
+            
             end
         end
     end

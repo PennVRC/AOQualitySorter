@@ -62,28 +62,30 @@ for i = 1:N
     fnameIn = AllSplit(I_new(i)).name;
     refSplit = strsplit(fnameIn,'aligned_to_ref');
     if(length(refSplit) > 1)
-        refNum = refSplit{2}(1);
+        refNum = str2double(regexprep(refSplit{2}(1:2),'[^0-9]',''));
     else
-        refNum = '1';
+        refNum = 1;
     end
      
+   refNumStr = num2str(refNum,'%02.f');
+    
    fnameOut = [num2str(i,'%04.f') '_' AllSplit(I_new(i)).name];
    
    fnameOut=regexprep(fnameOut,'_aligned_to_ref\d*_m\d*','');
    fnameOut = strrep(fnameOut, '_cropped_', '_crp');
    fnameOut = strrep(fnameOut, '_repaired', '_rep');
    
-   copyfile(fullfile(inDir,fnameIn),fullfile(outDir,['Sr' refNum 's' fnameOut]));
+   copyfile(fullfile(inDir,fnameIn),fullfile(outDir,['Sr' refNumStr 's' fnameOut]));
    
    fnameIn2 = strrep(fnameIn, '_split_det_', '_avg_');
    fnameIn2 = strrep(fnameIn2, '_m2.', '_m3.');
    fnameOut2 = strrep(fnameOut, '_split_det_', '_avg_');
    
-   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Ar' refNum 's' fnameOut2]));
+   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Ar' refNumStr 's' fnameOut2]));
 
    fnameIn2 = strrep(fnameIn, '_split_det_', '_confocal_');
    fnameIn2 = strrep(fnameIn2, '_m2.', '_m1.');
    fnameOut2 = strrep(fnameOut, '_split_det_', '_confocal_');
-   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Cr' refNum 's' fnameOut2]));
+   copyfile(fullfile(inDir,fnameIn2),fullfile(outDir,['Cr' refNumStr 's' fnameOut2]));
 end
 end
